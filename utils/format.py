@@ -3,20 +3,20 @@ import json
 import numpy
 import re
 import torch
-import torch_ac
+from torch_ac.utils import dictlist
 import gym
 
 import utils
 
 
-def get_obss_preprocessor(obs_space):
+def get_obs_goals_preprocessor(obs_space):
     # Check if obs_space is an image space
     if isinstance(obs_space, gym.spaces.Box):
         obs_space = {"image": obs_space.shape}
 
-        def preprocess_obss(obss, device=None):
-            return torch_ac.DictList({
-                "image": preprocess_images(obss, device=device)
+        def preprocess_obs_goals(obs_goals, device=None):
+            return dictlist.DictList({
+                "image": preprocess_images(obs_goals, device=device)
             })
 
     # Check if it is a MiniGrid observation space
@@ -24,17 +24,17 @@ def get_obss_preprocessor(obs_space):
         obs_space = {"image": obs_space.spaces["image"].shape, "text": 100}
 
         vocab = Vocabulary(obs_space["text"])
-        def preprocess_obss(obss, device=None):
-            return torch_ac.DictList({
-                "image": preprocess_images([obs["image"] for obs in obss], device=device),
-                "text": preprocess_texts([obs["mission"] for obs in obss], vocab, device=device)
+        def preprocess_obs_goals(obs_goals, device=None):
+            return dictlist.DictList({
+                "image": preprocess_images([obs_goal["image"] for obs_goal in obs_goals], device=device),
+                "text": preprocess_texts([obs_goal["mission"] for obs_goal in obs_goals], vocab, device=device)
             })
-        preprocess_obss.vocab = vocab
+        preprocess_obs_goals.vocab = vocab
 
     else:
         raise ValueError("Unknown observation space: " + str(obs_space))
 
-    return obs_space, preprocess_obss
+    return obs_space, preprocess_obs_goals
 
 
 def preprocess_images(images, device=None):

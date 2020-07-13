@@ -57,7 +57,8 @@ class FixEnvAndRGBImg(gym.core.Wrapper):
 
     def __init__(self, env, resize=False, obs_type='partial',tile_size=9):
         super().__init__(env)
-        assert tile_size % 3 == 0
+        if resize:
+            assert tile_size % 3 == 0
         
         self.done = False
         self.resize = resize

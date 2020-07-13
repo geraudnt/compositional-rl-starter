@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.distributions.categorical import Categorical
-import torch_ac
+from torch_ac.model import ACModel, RecurrentACModel
 
 
 # Function from https://github.com/ikostrikov/pytorch-a2c-ppo-acktr/blob/master/model.py
@@ -15,7 +15,7 @@ def init_params(m):
             m.bias.data.fill_(0)
 
 
-class ACModel(nn.Module, torch_ac.RecurrentACModel):
+class ACModel(nn.Module, RecurrentACModel):
     def __init__(self, obs_space, action_space, use_memory=False, use_text=False):
         super().__init__()
 
@@ -25,7 +25,7 @@ class ACModel(nn.Module, torch_ac.RecurrentACModel):
 
         # Define image embedding
         self.image_conv = nn.Sequential(
-            nn.Conv2d(3, 16, (2, 2)),
+            nn.Conv2d(3+3, 16, (2, 2)),
             nn.ReLU(),
             nn.MaxPool2d((2, 2)),
             nn.Conv2d(16, 32, (2, 2)),
@@ -78,8 +78,8 @@ class ACModel(nn.Module, torch_ac.RecurrentACModel):
     def semi_memory_size(self):
         return self.image_embedding_size
 
-    def forward(self, obs, memory):
-        x = obs.image.transpose(1, 3).transpose(2, 3)
+    def forward(self, obs_goal, memory):
+        x = obs_goal.image.transpose(1, 3).transpose(2, 3)
         x = self.image_conv(x)
         x = x.reshape(x.shape[0], -1)
 
@@ -92,7 +92,7 @@ class ACModel(nn.Module, torch_ac.RecurrentACModel):
             embedding = x
 
         if self.use_text:
-            embed_text = self._get_embed_text(obs.text)
+            embed_text = self._get_embed_text(obs_goal.text)
             embedding = torch.cat((embedding, embed_text), dim=1)
 
         x = self.actor(embedding)
