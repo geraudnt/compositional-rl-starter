@@ -69,7 +69,7 @@ class Agent:
                     dists, values, self.memories = self.acmodel(preprocessed_obs_goals, self.memories)
                 else:
                     dists, values = self.acmodel(preprocessed_obs_goals)
-            
+            print(values.data,values.data.max(0)[1])
             g = values.data.max(0)[1]
             if self.argmax:
                 actions[i] = dists.probs.max(1, keepdim=True)[1][g].cpu().numpy()

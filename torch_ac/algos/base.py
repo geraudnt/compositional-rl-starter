@@ -90,7 +90,7 @@ class BaseAlgo(ABC):
             self.goals[hash(str(self.obs[0]*0))] = self.obs[0]*0
 
         goals = list(self.goals.values())
-        self.goal = np.array([random.sample(goals,1)[0] for _ in range(self.num_procs)]) 
+        self.goal = np.array([random.sample(goals,1)[0] for _ in range(self.num_procs)])
 
         self.obs_goal = None
         
@@ -146,7 +146,7 @@ class BaseAlgo(ABC):
         TODO
         """
 
-        if 'image' in self.obs[0]:
+        if 'image' in self.obs:
             obs = obs['image']
         if hash(str(obs)) != hash(str(goal)) and done:  
             reward = self.N
@@ -245,12 +245,18 @@ class BaseAlgo(ABC):
             self.log_episode_num_frames *= self.mask
 
         # Hindsight experience replay
-
+        
         for i in range(self.num_frames_per_proc, len(self.exps)):
-            self.obs, action, reward, done, obs = self.exps[i-self.num_frames_per_proc]
+            e = i-self.num_frames_per_proc
+            self.obs, action, reward, done, obs = self.exps[e]
 
-            goals = list(self.goals.values())
-            self.goal = np.array([random.sample(goals,1)[0] for _ in range(self.num_procs)]) 
+            for p in range(self.num_procs):
+                next_goals = np.where(self.masks[e:self.num_frames_per_proc,p]==0)[0]
+                if not (len(next_goals) == 0 or next_goals[0] < e):
+                    obs_ = self.exps[next_goals[0]][0][p]
+                    if 'image' in obs_:
+                        obs_ = obs_['image']
+                    self.goal[p] = obs_
             
             self.concat_obs_goal()
             preprocessed_obs_goal = self.preprocess_obs_goals(self.obs_goal, device=self.device)

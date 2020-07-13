@@ -33,40 +33,9 @@ ACModel(
   )
 )
 
-C:\Users\ntg\Documents\composition_lang_project\compositional-rl-starter\scripts\train.py --algo ppo --env MiniGrid-DoorKey-5x5-v0 --model DoorKey --save-interval 10 --frames 80000
+Optimizer loaded
 
-Namespace(algo='ppo', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-DoorKey-5x5-v0', epochs=4, frames=80000, frames_per_proc=None, gae_lambda=0.95, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='DoorKey', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=10, seed=1, text=False, value_loss_coef=0.5)
-
-Device: cpu
-
-Environments loaded
-
-Training status loaded
-
-observations preprocessor loaded
-Model loaded
-
-ACModel(
-  (image_conv): Sequential(
-    (0): Conv2d(6, 16, kernel_size=(2, 2), stride=(1, 1))
-    (1): ReLU()
-    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
-    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
-    (4): ReLU()
-    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
-    (6): ReLU()
-  )
-  (actor): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=7, bias=True)
-  )
-  (critic): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=1, bias=True)
-  )
-)
+Goals loaded
 
 C:\Users\ntg\Documents\composition_lang_project\compositional-rl-starter\scripts\train.py --algo ppo --env MiniGrid-DoorKey-5x5-v0 --model DoorKey --save-interval 10 --frames 80000
 
@@ -107,5 +76,162 @@ Optimizer loaded
 
 Goals loaded
 
-Status saved
-Status saved
+C:\Users\ntg\Documents\composition_lang_project\compositional-rl-starter\scripts\train.py --algo ppo --env MiniGrid-DoorKey-5x5-v0 --model DoorKey --save-interval 10 --frames 80000
+
+Namespace(algo='ppo', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-DoorKey-5x5-v0', epochs=4, frames=80000, frames_per_proc=None, gae_lambda=0.95, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='DoorKey', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=10, seed=1, text=False, value_loss_coef=0.5)
+
+Device: cpu
+
+Environments loaded
+
+Training status loaded
+
+observations preprocessor loaded
+Model loaded
+
+ACModel(
+  (image_conv): Sequential(
+    (0): Conv2d(6, 16, kernel_size=(2, 2), stride=(1, 1))
+    (1): ReLU()
+    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
+    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
+    (4): ReLU()
+    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
+    (6): ReLU()
+  )
+  (actor): Sequential(
+    (0): Linear(in_features=64, out_features=64, bias=True)
+    (1): Tanh()
+    (2): Linear(in_features=64, out_features=7, bias=True)
+  )
+  (critic): Sequential(
+    (0): Linear(in_features=64, out_features=64, bias=True)
+    (1): Tanh()
+    (2): Linear(in_features=64, out_features=1, bias=True)
+  )
+)
+
+Optimizer loaded
+
+Goals loaded
+
+C:\Users\ntg\Documents\composition_lang_project\compositional-rl-starter\scripts\train.py --algo ppo --env MiniGrid-DoorKey-5x5-v0 --model DoorKey --save-interval 10 --frames 80000
+
+Namespace(algo='ppo', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-DoorKey-5x5-v0', epochs=4, frames=80000, frames_per_proc=None, gae_lambda=0.95, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='DoorKey', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=10, seed=1, text=False, value_loss_coef=0.5)
+
+Device: cpu
+
+Environments loaded
+
+Training status loaded
+
+observations preprocessor loaded
+Model loaded
+
+ACModel(
+  (image_conv): Sequential(
+    (0): Conv2d(6, 16, kernel_size=(2, 2), stride=(1, 1))
+    (1): ReLU()
+    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
+    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
+    (4): ReLU()
+    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
+    (6): ReLU()
+  )
+  (actor): Sequential(
+    (0): Linear(in_features=64, out_features=64, bias=True)
+    (1): Tanh()
+    (2): Linear(in_features=64, out_features=7, bias=True)
+  )
+  (critic): Sequential(
+    (0): Linear(in_features=64, out_features=64, bias=True)
+    (1): Tanh()
+    (2): Linear(in_features=64, out_features=1, bias=True)
+  )
+)
+
+Optimizer loaded
+
+Goals loaded
+
+b'U 1 | F 002048 | FPS 0114 | D 17 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 0.0 0.0 0 0 | H 1.932 | V -0.029 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.016'
+C:\Users\ntg\Documents\composition_lang_project\compositional-rl-starter\scripts\train.py --algo ppo --env MiniGrid-DoorKey-5x5-v0 --model DoorKey --save-interval 10 --frames 80000
+
+Namespace(algo='ppo', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-DoorKey-5x5-v0', epochs=4, frames=80000, frames_per_proc=None, gae_lambda=0.95, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='DoorKey', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=10, seed=1, text=False, value_loss_coef=0.5)
+
+Device: cpu
+
+Environments loaded
+
+Training status loaded
+
+observations preprocessor loaded
+Model loaded
+
+ACModel(
+  (image_conv): Sequential(
+    (0): Conv2d(6, 16, kernel_size=(2, 2), stride=(1, 1))
+    (1): ReLU()
+    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
+    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
+    (4): ReLU()
+    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
+    (6): ReLU()
+  )
+  (actor): Sequential(
+    (0): Linear(in_features=64, out_features=64, bias=True)
+    (1): Tanh()
+    (2): Linear(in_features=64, out_features=7, bias=True)
+  )
+  (critic): Sequential(
+    (0): Linear(in_features=64, out_features=64, bias=True)
+    (1): Tanh()
+    (2): Linear(in_features=64, out_features=1, bias=True)
+  )
+)
+
+Optimizer loaded
+
+Goals loaded
+
+b'U 1 | F 002048 | FPS 0175 | D 11 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 0.0 0.0 0 0 | H 1.932 | V -0.029 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.016'
+C:\Users\ntg\Documents\composition_lang_project\compositional-rl-starter\scripts\train.py --algo ppo --env MiniGrid-DoorKey-5x5-v0 --model DoorKey --save-interval 10 --frames 80000
+
+Namespace(algo='ppo', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-DoorKey-5x5-v0', epochs=4, frames=80000, frames_per_proc=None, gae_lambda=0.95, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='DoorKey', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=10, seed=1, text=False, value_loss_coef=0.5)
+
+Device: cpu
+
+Environments loaded
+
+Training status loaded
+
+observations preprocessor loaded
+Model loaded
+
+ACModel(
+  (image_conv): Sequential(
+    (0): Conv2d(6, 16, kernel_size=(2, 2), stride=(1, 1))
+    (1): ReLU()
+    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
+    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
+    (4): ReLU()
+    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
+    (6): ReLU()
+  )
+  (actor): Sequential(
+    (0): Linear(in_features=64, out_features=64, bias=True)
+    (1): Tanh()
+    (2): Linear(in_features=64, out_features=7, bias=True)
+  )
+  (critic): Sequential(
+    (0): Linear(in_features=64, out_features=64, bias=True)
+    (1): Tanh()
+    (2): Linear(in_features=64, out_features=1, bias=True)
+  )
+)
+
+Optimizer loaded
+
+Goals loaded
+
+b'U 1 | F 002048 | FPS 0115 | D 17 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 0.0 0.0 0 0 | H 1.932 | V -0.029 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.016'
