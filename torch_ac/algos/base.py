@@ -5,6 +5,7 @@ import random
 
 from torch_ac.format import default_preprocess_obs_goals
 from torch_ac.utils import dictlist, penv
+from matplotlib import pyplot as plt
 
 class BaseAlgo(ABC):
     """The base class for RL algorithms."""
@@ -99,6 +100,7 @@ class BaseAlgo(ABC):
         shape = (self.num_frames_per_proc*self.her, self.num_procs)
         self.exps = [None]*(shape[0])
         self.obs_goals = [None]*(shape[0])
+        self.dones = [0]*(shape[0])
         
         if self.acmodel.recurrent:
             self.memory = torch.zeros(shape[1], self.acmodel.memory_size, device=self.device)
@@ -141,15 +143,30 @@ class BaseAlgo(ABC):
             }
             for i in range(self.num_procs)]
 
-    def extended_reward(self, obs, goal, action, reward, done):   
+    def extended_reward(self, obs, goal, action, reward, done,b=False):   
         """
         TODO
         """
 
-        if 'image' in self.obs:
+        if 'image' in obs:
             obs = obs['image']
         if hash(str(obs)) != hash(str(goal)) and done:  
             reward = self.N
+        # elif done:
+        #     print("NICE")
+        # if done:
+        #     obs = self.env.envs[0].unwrapped.get_obs_render(
+        #         obs,
+        #         tile_size=32
+        #     )
+        #     plt.imshow(obs)
+        #     plt.show()
+        #     goal = self.env.envs[0].unwrapped.get_obs_render(
+        #         goal,
+        #         tile_size=32
+        #     )
+        #     plt.imshow(goal)
+        #     plt.show()
         return reward
 
     def collect_experiences(self):
@@ -195,6 +212,7 @@ class BaseAlgo(ABC):
                 self.memory = memory
             self.masks[i] = self.mask
             self.mask = 1 - torch.tensor(done, device=self.device, dtype=torch.float)
+            self.dones[i] = done
             self.actions[i] = action
             self.values[i] = value
             extended_reward = [
@@ -250,13 +268,21 @@ class BaseAlgo(ABC):
             e = i-self.num_frames_per_proc
             self.obs, action, reward, done, obs = self.exps[e]
 
-            for p in range(self.num_procs):
-                next_goals = np.where(self.masks[e:self.num_frames_per_proc,p]==0)[0]
-                if not (len(next_goals) == 0 or next_goals[0] < e):
-                    obs_ = self.exps[next_goals[0]][0][p]
-                    if 'image' in obs_:
-                        obs_ = obs_['image']
-                    self.goal[p] = obs_
+            b=False
+            # dones = np.array(self.dones[e:self.num_frames_per_proc])+0
+            # for p in range(self.num_procs):
+            #     next_goals = np.where(dones[:,p]==1)[0]
+            #     if not (len(next_goals) == 0 or next_goals[0] < e):
+            #         if e==next_goals[0]:
+            #             print(e,next_goals)
+            #             print(done)
+            #             b=True
+            #         obs_ = self.exps[next_goals[0]][0][p]
+            #         if 'image' in obs_:
+            #             obs_ = obs_['image']
+            #         self.goal[p] = obs_
+            goals = list(self.goals.values())
+            self.goal = np.array([random.sample(goals,1)[0] for _ in range(self.num_procs)])
             
             self.concat_obs_goal()
             preprocessed_obs_goal = self.preprocess_obs_goals(self.obs_goal, device=self.device)
@@ -279,7 +305,7 @@ class BaseAlgo(ABC):
             self.actions[i] = action
             self.values[i] = value
             extended_reward = [
-                self.extended_reward(obs_, goal_, action_, reward_, done_)
+                self.extended_reward(obs_, goal_, action_, reward_, done_,b=b)
                 for obs_, goal_, action_, reward_, done_ in zip(self.obs, self.goal, action, reward, done)
             ]
             if self.reshape_reward is not None:
