@@ -57,6 +57,7 @@ print("Agent loaded\n")
 
 # Run the agent
 
+args.gif='./'
 if args.gif:
    from array2gif import write_gif
    frames = []

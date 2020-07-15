@@ -152,9 +152,9 @@ class BaseAlgo(ABC):
             obs = obs['image']
         if hash(str(obs)) != hash(str(goal)) and done:  
             reward = self.N
-        # elif done:
-        #     print("NICE")
-        # if done:
+        elif done:
+            print("REWARDED")
+        # if b:
         #     obs = self.env.envs[0].unwrapped.get_obs_render(
         #         obs,
         #         tile_size=32
@@ -233,16 +233,16 @@ class BaseAlgo(ABC):
             # done_ = np.array(done)+0
             # idxs = np.arange(self.num_procs)[done_==1]
             # for i in idxs:
-            for i, done_ in enumerate(done):
+            for j, done_ in enumerate(done):
                 if done_:
                     if 'image' in self.obs[0]:
-                        self.goals[hash(str(self.obs[i]['image']))] = self.obs[i]['image']
+                        self.goals[hash(str(self.obs[j]['image']))] = self.obs[j]['image']
                     else:
-                        self.goals[hash(str(self.obs[i]))] = self.obs[i]
+                        self.goals[hash(str(self.obs[j]))] = self.obs[j]
 
                     goals = list(self.goals.values())
-                    self.goal[i] = random.sample(goals,1)[0]
-                    print(len(goals))
+                    self.goal[j] = random.sample(goals,1)[0]
+                    print('Num goals: ',len(goals))
             self.obs = obs
             
             # Update log values
@@ -269,20 +269,18 @@ class BaseAlgo(ABC):
             self.obs, action, reward, done, obs = self.exps[e]
 
             b=False
-            # dones = np.array(self.dones[e:self.num_frames_per_proc])+0
-            # for p in range(self.num_procs):
-            #     next_goals = np.where(dones[:,p]==1)[0]
-            #     if not (len(next_goals) == 0 or next_goals[0] < e):
-            #         if e==next_goals[0]:
-            #             print(e,next_goals)
-            #             print(done)
-            #             b=True
-            #         obs_ = self.exps[next_goals[0]][0][p]
-            #         if 'image' in obs_:
-            #             obs_ = obs_['image']
-            #         self.goal[p] = obs_
-            goals = list(self.goals.values())
-            self.goal = np.array([random.sample(goals,1)[0] for _ in range(self.num_procs)])
+            dones = np.array(self.dones[e:self.num_frames_per_proc])+0
+            for p in range(self.num_procs):
+                next_goals = np.where(dones[:,p]==1)[0]+e
+                if len(next_goals) != 0 and next_goals[0] >= e:
+                    if e==next_goals[0]:
+                        b=True
+                    obs_ = self.exps[next_goals[0]][0][p]
+                    if 'image' in obs_:
+                        obs_ = obs_['image']
+                    self.goal[p] = obs_
+            # goals = list(self.goals.values())
+            # self.goal = np.array([random.sample(goals,1)[0] for _ in range(self.num_procs)])
             
             self.concat_obs_goal()
             preprocessed_obs_goal = self.preprocess_obs_goals(self.obs_goal, device=self.device)
