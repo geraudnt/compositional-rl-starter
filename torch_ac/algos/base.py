@@ -152,21 +152,7 @@ class BaseAlgo(ABC):
             obs = obs['image']
         if hash(str(obs)) != hash(str(goal)) and done:  
             reward = self.N
-        elif done:
-            print("REWARDED")
-        # if b:
-        #     obs = self.env.envs[0].unwrapped.get_obs_render(
-        #         obs,
-        #         tile_size=32
-        #     )
-        #     plt.imshow(obs)
-        #     plt.show()
-        #     goal = self.env.envs[0].unwrapped.get_obs_render(
-        #         goal,
-        #         tile_size=32
-        #     )
-        #     plt.imshow(goal)
-        #     plt.show()
+            
         return reward
 
     def collect_experiences(self):
@@ -242,7 +228,7 @@ class BaseAlgo(ABC):
 
                     goals = list(self.goals.values())
                     self.goal[j] = random.sample(goals,1)[0]
-                    print('Num goals: ',len(goals))
+                    # print('Num goals: ',len(goals))
             self.obs = obs
             
             # Update log values
@@ -289,7 +275,6 @@ class BaseAlgo(ABC):
                     dist, value, memory = self.acmodel(preprocessed_obs_goal, self.memory * self.mask.unsqueeze(1))
                 else:
                     dist, value = self.acmodel(preprocessed_obs_goal)
-            action = dist.sample()
             
             # Update experiences values
 

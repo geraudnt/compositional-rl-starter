@@ -37,283 +37,47 @@ Optimizer loaded
 
 Goals loaded
 
-b'U 1 | F 002048 | FPS 0131 | D 15 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 0.0 0.0 0 0 | H 1.932 | V -0.029 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.016'
-b'U 2 | F 004096 | FPS 0116 | D 33 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 26.0 69.0 0.0 222.0 | H 1.942 | V -0.025 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.004'
-C:\Users\ntg\Documents\composition_lang_project\compositional-rl-starter\scripts\train.py --algo ppo --env MiniGrid-DoorKey-5x5-v0 --model DoorKey --save-interval 10 --frames 80000
-
-Namespace(algo='ppo', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-DoorKey-5x5-v0', epochs=4, frames=80000, frames_per_proc=None, gae_lambda=0.95, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='DoorKey', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=10, seed=1, text=False, value_loss_coef=0.5)
-
-Device: cpu
-
-Environments loaded
-
-Training status loaded
-
-observations preprocessor loaded
-Model loaded
-
-ACModel(
-  (image_conv): Sequential(
-    (0): Conv2d(6, 16, kernel_size=(2, 2), stride=(1, 1))
-    (1): ReLU()
-    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
-    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
-    (4): ReLU()
-    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
-    (6): ReLU()
-  )
-  (actor): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=7, bias=True)
-  )
-  (critic): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=1, bias=True)
-  )
-)
-
-C:\Users\ntg\Documents\composition_lang_project\compositional-rl-starter\scripts\train.py --algo ppo --env MiniGrid-DoorKey-5x5-v0 --model DoorKey --save-interval 10 --frames 80000
-
-Namespace(algo='ppo', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-DoorKey-5x5-v0', epochs=4, frames=80000, frames_per_proc=None, gae_lambda=0.95, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='DoorKey', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=10, seed=1, text=False, value_loss_coef=0.5)
-
-Device: cpu
-
-Environments loaded
-
-Training status loaded
-
-observations preprocessor loaded
-Model loaded
-
-ACModel(
-  (image_conv): Sequential(
-    (0): Conv2d(6, 16, kernel_size=(2, 2), stride=(1, 1))
-    (1): ReLU()
-    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
-    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
-    (4): ReLU()
-    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
-    (6): ReLU()
-  )
-  (actor): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=7, bias=True)
-  )
-  (critic): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=1, bias=True)
-  )
-)
-
-Optimizer loaded
-
-Goals loaded
-
-b'U 1 | F 002048 | FPS 0173 | D 11 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 0.0 0.0 0 0 | H 1.932 | V -0.029 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.016'
-C:\Users\ntg\Documents\composition_lang_project\compositional-rl-starter\scripts\train.py --algo ppo --env MiniGrid-DoorKey-5x5-v0 --model DoorKey --save-interval 10 --frames 80000
-
-Namespace(algo='ppo', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-DoorKey-5x5-v0', epochs=4, frames=80000, frames_per_proc=None, gae_lambda=0.95, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='DoorKey', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=10, seed=1, text=False, value_loss_coef=0.5)
-
-Device: cpu
-
-Environments loaded
-
-Training status loaded
-
-observations preprocessor loaded
-Model loaded
-
-ACModel(
-  (image_conv): Sequential(
-    (0): Conv2d(6, 16, kernel_size=(2, 2), stride=(1, 1))
-    (1): ReLU()
-    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
-    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
-    (4): ReLU()
-    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
-    (6): ReLU()
-  )
-  (actor): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=7, bias=True)
-  )
-  (critic): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=1, bias=True)
-  )
-)
-
-Optimizer loaded
-
-Goals loaded
-
-b'U 1 | F 002048 | FPS 0202 | D 10 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 0.0 0.0 0 0 | H 1.932 | V -0.029 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.016'
-C:\Users\ntg\Documents\composition_lang_project\compositional-rl-starter\scripts\train.py --algo ppo --env MiniGrid-DoorKey-5x5-v0 --model DoorKey --save-interval 10 --frames 80000
-
-Namespace(algo='ppo', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-DoorKey-5x5-v0', epochs=4, frames=80000, frames_per_proc=None, gae_lambda=0.95, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='DoorKey', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=10, seed=1, text=False, value_loss_coef=0.5)
-
-Device: cpu
-
-Environments loaded
-
-Training status loaded
-
-observations preprocessor loaded
-Model loaded
-
-ACModel(
-  (image_conv): Sequential(
-    (0): Conv2d(6, 16, kernel_size=(2, 2), stride=(1, 1))
-    (1): ReLU()
-    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
-    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
-    (4): ReLU()
-    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
-    (6): ReLU()
-  )
-  (actor): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=7, bias=True)
-  )
-  (critic): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=1, bias=True)
-  )
-)
-
-Optimizer loaded
-
-Goals loaded
-
-b'U 1 | F 002048 | FPS 0202 | D 10 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 0.0 0.0 0 0 | H 1.932 | V -0.029 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.016'
-b'U 2 | F 004096 | FPS 0179 | D 21 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 26.0 69.0 0.0 222.0 | H 1.942 | V -0.025 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.004'
-C:\Users\ntg\Documents\composition_lang_project\compositional-rl-starter\scripts\train.py --algo ppo --env MiniGrid-DoorKey-5x5-v0 --model DoorKey --save-interval 10 --frames 80000
-
-Namespace(algo='ppo', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-DoorKey-5x5-v0', epochs=4, frames=80000, frames_per_proc=None, gae_lambda=0.95, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='DoorKey', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=10, seed=1, text=False, value_loss_coef=0.5)
-
-Device: cpu
-
-Environments loaded
-
-Training status loaded
-
-observations preprocessor loaded
-Model loaded
-
-ACModel(
-  (image_conv): Sequential(
-    (0): Conv2d(6, 16, kernel_size=(2, 2), stride=(1, 1))
-    (1): ReLU()
-    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
-    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
-    (4): ReLU()
-    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
-    (6): ReLU()
-  )
-  (actor): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=7, bias=True)
-  )
-  (critic): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=1, bias=True)
-  )
-)
-
-Optimizer loaded
-
-Goals loaded
-
-b'U 1 | F 002048 | FPS 0183 | D 11 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 0.0 0.0 0 0 | H 1.932 | V -0.029 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.016'
-b'U 2 | F 004096 | FPS 0167 | D 23 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 26.0 69.0 0.0 222.0 | H 1.942 | V -0.025 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.004'
-C:\Users\ntg\Documents\composition_lang_project\compositional-rl-starter\scripts\train.py --algo ppo --env MiniGrid-DoorKey-5x5-v0 --model DoorKey --save-interval 10 --frames 80000
-
-Namespace(algo='ppo', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-DoorKey-5x5-v0', epochs=4, frames=80000, frames_per_proc=None, gae_lambda=0.95, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='DoorKey', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=10, seed=1, text=False, value_loss_coef=0.5)
-
-Device: cpu
-
-Environments loaded
-
-Training status loaded
-
-observations preprocessor loaded
-Model loaded
-
-ACModel(
-  (image_conv): Sequential(
-    (0): Conv2d(6, 16, kernel_size=(2, 2), stride=(1, 1))
-    (1): ReLU()
-    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
-    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
-    (4): ReLU()
-    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
-    (6): ReLU()
-  )
-  (actor): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=7, bias=True)
-  )
-  (critic): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=1, bias=True)
-  )
-)
-
-Optimizer loaded
-
-Goals loaded
-
-b'U 1 | F 002048 | FPS 0134 | D 15 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 0.0 0.0 0 0 | H 1.932 | V -0.029 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.016'
-b'U 2 | F 004096 | FPS 0147 | D 29 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 26.0 69.0 0.0 222.0 | H 1.942 | V -0.025 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.004'
-C:\Users\ntg\Documents\composition_lang_project\compositional-rl-starter\scripts\train.py --algo ppo --env MiniGrid-DoorKey-5x5-v0 --model DoorKey --save-interval 10 --frames 80000
-
-Namespace(algo='ppo', batch_size=256, clip_eps=0.2, discount=0.99, entropy_coef=0.01, env='MiniGrid-DoorKey-5x5-v0', epochs=4, frames=80000, frames_per_proc=None, gae_lambda=0.95, log_interval=1, lr=0.001, max_grad_norm=0.5, mem=False, model='DoorKey', optim_alpha=0.99, optim_eps=1e-08, procs=16, recurrence=1, save_interval=10, seed=1, text=False, value_loss_coef=0.5)
-
-Device: cpu
-
-Environments loaded
-
-Training status loaded
-
-observations preprocessor loaded
-Model loaded
-
-ACModel(
-  (image_conv): Sequential(
-    (0): Conv2d(6, 16, kernel_size=(2, 2), stride=(1, 1))
-    (1): ReLU()
-    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
-    (3): Conv2d(16, 32, kernel_size=(2, 2), stride=(1, 1))
-    (4): ReLU()
-    (5): Conv2d(32, 64, kernel_size=(2, 2), stride=(1, 1))
-    (6): ReLU()
-  )
-  (actor): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=7, bias=True)
-  )
-  (critic): Sequential(
-    (0): Linear(in_features=64, out_features=64, bias=True)
-    (1): Tanh()
-    (2): Linear(in_features=64, out_features=1, bias=True)
-  )
-)
-
-Optimizer loaded
-
-Goals loaded
-
-b'U 1 | F 002048 | FPS 0166 | D 12 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 0.0 0.0 0 0 | H 1.932 | V -0.029 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.016'
+b'U 1 | F 002048 | FPS 0268 | D 7 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 0.0 0.0 0 0 | H 1.936 | V -0.028 | pL -0.005 | vL 0.000 | \xe2\x88\x87 0.017'
+b'U 2 | F 004096 | FPS 0252 | D 15 | rR:uomM 0.00 0.00 0.00 0.00 | F:uomM 12.4 48.2 0.0 199.0 | H 1.937 | V -0.024 | pL -0.004 | vL 0.000 | \xe2\x88\x87 0.003'
+b'U 3 | F 006144 | FPS 0233 | D 24 | rR:uomM 0.06 0.24 0.00 1.00 | F:uomM 33.6 79.2 0.0 273.0 | H 1.928 | V -0.002 | pL -0.032 | vL 0.008 | \xe2\x88\x87 0.035'
+b'U 4 | F 008192 | FPS 0211 | D 34 | rR:uomM 0.12 0.33 0.00 1.00 | F:uomM 159.7 190.9 0.0 499.0 | H 1.936 | V 0.020 | pL -0.006 | vL 0.002 | \xe2\x88\x87 0.029'
+b'U 5 | F 010240 | FPS 0247 | D 42 | rR:uomM 0.12 0.33 0.00 1.00 | F:uomM 193.9 204.7 0.0 530.0 | H 1.934 | V 0.045 | pL -0.007 | vL 0.004 | \xe2\x88\x87 0.035'
+b'U 6 | F 012288 | FPS 0237 | D 51 | rR:uomM 0.31 0.46 0.00 1.00 | F:uomM 329.1 226.1 0.0 728.0 | H 1.928 | V 0.086 | pL -0.011 | vL 0.005 | \xe2\x88\x87 0.029'
+b'U 7 | F 014336 | FPS 0253 | D 59 | rR:uomM 0.31 0.46 0.00 1.00 | F:uomM 396.9 228.7 18.0 818.0 | H 1.925 | V 0.097 | pL 0.002 | vL 0.004 | \xe2\x88\x87 0.050'
+b'U 8 | F 016384 | FPS 0258 | D 67 | rR:uomM 0.25 0.43 0.00 1.00 | F:uomM 475.1 282.6 18.0 961.0 | H 1.922 | V 0.098 | pL 0.006 | vL 0.003 | \xe2\x88\x87 0.027'
+b'U 9 | F 018432 | FPS 0244 | D 75 | rR:uomM 0.38 0.48 0.00 1.00 | F:uomM 486.6 346.7 18.0 1099.0 | H 1.906 | V 0.147 | pL 0.001 | vL 0.004 | \xe2\x88\x87 0.043'
+b'U 10 | F 020480 | FPS 0250 | D 84 | rR:uomM 0.31 0.46 0.00 1.00 | F:uomM 553.1 400.7 68.0 1258.0 | H 1.880 | V 0.183 | pL -0.004 | vL 0.011 | \xe2\x88\x87 0.081'
+Status saved
+b'U 11 | F 022528 | FPS 0234 | D 92 | rR:uomM 0.38 0.48 0.00 1.00 | F:uomM 546.1 410.8 93.0 1289.0 | H 1.861 | V 0.239 | pL -0.011 | vL 0.008 | \xe2\x88\x87 0.060'
+b'U 12 | F 024576 | FPS 0247 | D 101 | rR:uomM 0.44 0.50 0.00 1.00 | F:uomM 478.3 377.1 109.0 1289.0 | H 1.857 | V 0.255 | pL 0.023 | vL 0.008 | \xe2\x88\x87 0.081'
+b'U 13 | F 026624 | FPS 0240 | D 109 | rR:uomM 0.69 0.46 0.00 1.00 | F:uomM 296.9 232.1 69.0 972.0 | H 1.855 | V 0.256 | pL 0.005 | vL 0.010 | \xe2\x88\x87 0.075'
+b'U 14 | F 028672 | FPS 0238 | D 118 | rR:uomM 0.75 0.43 0.00 1.00 | F:uomM 350.4 258.5 69.0 990.0 | H 1.820 | V 0.261 | pL -0.025 | vL 0.012 | \xe2\x88\x87 0.107'
+b'U 15 | F 030720 | FPS 0238 | D 126 | rR:uomM 0.81 0.39 0.00 1.00 | F:uomM 306.3 271.7 57.0 990.0 | H 1.796 | V 0.269 | pL 0.012 | vL 0.010 | \xe2\x88\x87 0.090'
+b'U 16 | F 032768 | FPS 0243 | D 135 | rR:uomM 0.94 0.24 0.00 1.00 | F:uomM 175.9 128.2 55.0 499.0 | H 1.807 | V 0.301 | pL -0.014 | vL 0.012 | \xe2\x88\x87 0.072'
+b'U 17 | F 034816 | FPS 0246 | D 143 | rR:uomM 0.81 0.39 0.00 1.00 | F:uomM 141.9 177.1 17.0 785.0 | H 1.754 | V 0.336 | pL -0.022 | vL 0.014 | \xe2\x88\x87 0.158'
+b'U 18 | F 036864 | FPS 0243 | D 152 | rR:uomM 0.88 0.33 0.00 1.00 | F:uomM 159.4 177.1 26.0 785.0 | H 1.824 | V 0.264 | pL 0.022 | vL 0.007 | \xe2\x88\x87 0.070'
+b'U 19 | F 038912 | FPS 0241 | D 160 | rR:uomM 0.88 0.33 0.00 1.00 | F:uomM 182.2 137.2 34.0 589.0 | H 1.814 | V 0.326 | pL -0.006 | vL 0.018 | \xe2\x88\x87 0.114'
+b'U 20 | F 040960 | FPS 0238 | D 169 | rR:uomM 0.94 0.24 0.00 1.00 | F:uomM 180.2 160.8 15.0 620.0 | H 1.774 | V 0.408 | pL -0.038 | vL 0.021 | \xe2\x88\x87 0.155'
+Status saved
+b'U 21 | F 043008 | FPS 0239 | D 177 | rR:uomM 0.89 0.31 0.00 1.00 | F:uomM 138.8 124.1 23.0 597.0 | H 1.766 | V 0.425 | pL -0.034 | vL 0.016 | \xe2\x88\x87 0.159'
+b'U 22 | F 045056 | FPS 0213 | D 187 | rR:uomM 0.68 0.47 0.00 1.00 | F:uomM 116.4 125.7 29.0 668.0 | H 1.734 | V 0.445 | pL -0.013 | vL 0.015 | \xe2\x88\x87 0.104'
+b'U 23 | F 047104 | FPS 0235 | D 196 | rR:uomM 0.72 0.45 0.00 1.00 | F:uomM 88.1 49.7 26.0 263.0 | H 1.706 | V 0.516 | pL -0.020 | vL 0.015 | \xe2\x88\x87 0.211'
+b'U 24 | F 049152 | FPS 0054 | D 234 | rR:uomM 0.89 0.31 0.00 1.00 | F:uomM 79.8 38.6 30.0 180.0 | H 1.694 | V 0.500 | pL -0.014 | vL 0.011 | \xe2\x88\x87 0.142'
+b'U 25 | F 051200 | FPS 0274 | D 241 | rR:uomM 0.79 0.41 0.00 1.00 | F:uomM 73.2 41.0 17.0 193.0 | H 1.693 | V 0.484 | pL -0.020 | vL 0.013 | \xe2\x88\x87 0.140'
+b'U 26 | F 053248 | FPS 0280 | D 248 | rR:uomM 0.79 0.41 0.00 1.00 | F:uomM 81.2 39.9 14.0 167.0 | H 1.558 | V 0.544 | pL -0.035 | vL 0.018 | \xe2\x88\x87 0.115'
+b'U 27 | F 055296 | FPS 0269 | D 256 | rR:uomM 0.72 0.45 0.00 1.00 | F:uomM 67.4 40.3 14.0 163.0 | H 1.588 | V 0.518 | pL -0.001 | vL 0.015 | \xe2\x88\x87 0.179'
+b'U 28 | F 057344 | FPS 0267 | D 264 | rR:uomM 0.66 0.47 0.00 1.00 | F:uomM 69.4 46.2 16.0 241.0 | H 1.622 | V 0.557 | pL -0.013 | vL 0.014 | \xe2\x88\x87 0.147'
+b'U 29 | F 059392 | FPS 0270 | D 271 | rR:uomM 0.69 0.46 0.00 1.00 | F:uomM 67.6 33.2 19.0 160.0 | H 1.524 | V 0.595 | pL -0.004 | vL 0.010 | \xe2\x88\x87 0.136'
+b'U 30 | F 061440 | FPS 0038 | D 324 | rR:uomM 0.82 0.38 0.00 1.00 | F:uomM 69.4 41.7 15.0 159.0 | H 1.451 | V 0.623 | pL -0.005 | vL 0.009 | \xe2\x88\x87 0.152'
+Status saved
+b'U 31 | F 063488 | FPS 0272 | D 332 | rR:uomM 0.88 0.32 0.00 1.00 | F:uomM 73.2 40.5 21.0 174.0 | H 1.475 | V 0.580 | pL 0.017 | vL 0.012 | \xe2\x88\x87 0.123'
+b'U 32 | F 065536 | FPS 0263 | D 340 | rR:uomM 0.83 0.38 0.00 1.00 | F:uomM 85.5 41.4 18.0 162.0 | H 1.474 | V 0.530 | pL 0.013 | vL 0.011 | \xe2\x88\x87 0.105'
+b'U 33 | F 067584 | FPS 0282 | D 347 | rR:uomM 0.90 0.30 0.00 1.00 | F:uomM 83.2 51.0 19.0 203.0 | H 1.328 | V 0.543 | pL 0.018 | vL 0.010 | \xe2\x88\x87 0.177'
+b'U 34 | F 069632 | FPS 0289 | D 354 | rR:uomM 1.00 0.00 1.00 1.00 | F:uomM 91.2 72.1 8.0 286.0 | H 1.402 | V 0.495 | pL 0.002 | vL 0.012 | \xe2\x88\x87 0.144'
+b'U 35 | F 071680 | FPS 0274 | D 362 | rR:uomM 0.90 0.30 0.00 1.00 | F:uomM 75.9 48.5 11.0 141.0 | H 1.250 | V 0.542 | pL -0.041 | vL 0.020 | \xe2\x88\x87 0.179'
+b'U 36 | F 073728 | FPS 0245 | D 370 | rR:uomM 0.85 0.36 0.00 1.00 | F:uomM 76.5 45.8 12.0 148.0 | H 1.303 | V 0.519 | pL -0.010 | vL 0.014 | \xe2\x88\x87 0.182'
+b'U 37 | F 075776 | FPS 0250 | D 378 | rR:uomM 0.92 0.28 0.00 1.00 | F:uomM 64.3 48.2 10.0 220.0 | H 1.368 | V 0.538 | pL -0.019 | vL 0.019 | \xe2\x88\x87 0.344'
+b'U 38 | F 077824 | FPS 0268 | D 386 | rR:uomM 0.91 0.28 0.00 1.00 | F:uomM 63.3 69.8 12.0 331.0 | H 1.359 | V 0.531 | pL 0.022 | vL 0.010 | \xe2\x88\x87 0.164'
+b'U 39 | F 079872 | FPS 0265 | D 394 | rR:uomM 0.93 0.25 0.00 1.00 | F:uomM 69.7 54.7 10.0 215.0 | H 1.346 | V 0.551 | pL 0.016 | vL 0.011 | \xe2\x88\x87 0.149'
+b'U 40 | F 081920 | FPS 0266 | D 401 | rR:uomM 0.95 0.21 0.00 1.00 | F:uomM 107.4 110.5 22.0 473.0 | H 1.413 | V 0.476 | pL -0.001 | vL 0.015 | \xe2\x88\x87 0.177'
+Status saved
