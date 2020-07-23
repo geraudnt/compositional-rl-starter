@@ -14,34 +14,28 @@ class Agent:
     - to analyze the feedback (i.e. reward and done state) of its action."""
 
     def __init__(self, env, obs_space, action_space, model_dir,
-                 device=None, argmax=False, num_envs=1, use_memory=False, use_text=False):
+                 device=None, argmax=False, use_memory=False, use_text=False):
         obs_space, self.preprocess_obs_goals = utils.get_obs_goals_preprocessor(obs_space)
         self.acmodel = ACModel(obs_space, action_space, use_memory=use_memory, use_text=use_text)
         self.device = device
-        self.argmax = argmax
-        self.num_envs = num_envs
-
+        self.argmax = argmax        
+        
         status = utils.get_status(model_dir)
 
+        self.goals = list(status['agent_goals'].values())
+        # for goal in self.goals:
+        #     goal = env.unwrapped.get_obs_render( goal, tile_size=32)
+        #     plt.imshow(goal)
+        #     plt.show()
+
         if self.acmodel.recurrent:
-            self.memories = torch.zeros(self.num_envs, self.acmodel.memory_size)
+            self.memories = torch.zeros(len(self.goals), self.acmodel.memory_size)
 
         self.acmodel.load_state_dict(status["model_state"])
         self.acmodel.to(self.device)
         self.acmodel.eval()
         if hasattr(self.preprocess_obs_goals, "vocab"):
             self.preprocess_obs_goals.vocab.load_vocab(status["vocab"])
-        
-        self.goals = list(status['agent_goals'].values())
-
-        for goal in self.goals:
-            goal = env.unwrapped.get_obs_render(
-                goal,
-                tile_size=32
-            )
-
-            plt.imshow(goal)
-            plt.show()
 
     def concat_obs_goal(self, obs):
         if 'image' in obs:

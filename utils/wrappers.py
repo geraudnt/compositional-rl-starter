@@ -12,8 +12,21 @@ class FixEnv(gym.core.Wrapper):
 
     def __init__(self, env):
         super().__init__(env)
+        self.rmin = 0
+        self.reward = self.rmin
         self.done = False
         self.agent_view_size = env.unwrapped.agent_view_size
+    
+    def remake(self):
+        return self.env
+
+    def reset(self):
+        self.env.close()
+        super().__init__(self.remake())
+        obs = self.env.reset()
+        self.reward = self.rmin           
+        self.done = False
+        return obs
 
     def step(self, action):  
         self.env.max_steps = float("inf")
@@ -23,6 +36,8 @@ class FixEnv(gym.core.Wrapper):
             ### Narrow down goal space
             self.env.agent_view_size = 3
             image_ = self.env.gen_obs()['image']
+            image_[[0,2],:,:] = 0
+            image_[:,0,:] = 0
             self.env.agent_view_size = self.agent_view_size
 
             image = np.zeros(shape=obs['image'].shape, dtype=obs['image'].dtype)
@@ -33,13 +48,15 @@ class FixEnv(gym.core.Wrapper):
 
             ### Make goal rewards binary then terminate.
             if self.done:
-                reward = 1
-                done = True                
+                reward = self.reward
+                self.reward = self.rmin
+                done = self.done                
                 self.done = False
             else:
-                reward = 0
+                self.reward = reward
+                reward = self.rmin
+                self.done = done
                 done = False
-                self.done = True
                                 
         return obs, reward, done, {}
 
@@ -121,6 +138,8 @@ class FixEnvAndRGBImg(gym.core.Wrapper):
             ### Narrow down goal space
             self.env.agent_view_size = 3
             obs = self.env.gen_obs()
+            obs['image'][[0,2],:,:] = 0
+            obs['image'][:,0,:] = 0
             self.env.agent_view_size = self.agent_view_size
             rgb_img = self.get_rgb_img(obs, 'partial', done=done)
             self.env.agent_view_size = 3

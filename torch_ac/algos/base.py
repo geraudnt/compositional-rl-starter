@@ -228,7 +228,7 @@ class BaseAlgo(ABC):
 
                     goals = list(self.goals.values())
                     self.goal[j] = random.sample(goals,1)[0]
-                    # print('Num goals: ',len(goals))
+                    print('Num goals: ',len(goals))
             self.obs = obs
             
             # Update log values
@@ -265,8 +265,9 @@ class BaseAlgo(ABC):
                     if 'image' in obs_:
                         obs_ = obs_['image']
                     self.goal[p] = obs_
-            # goals = list(self.goals.values())
-            # self.goal = np.array([random.sample(goals,1)[0] for _ in range(self.num_procs)])
+                # else:
+                #     goals = list(self.goals.values())
+                #     self.goal[p] = random.sample(goals,1)[0]
             
             self.concat_obs_goal()
             preprocessed_obs_goal = self.preprocess_obs_goals(self.obs_goal, device=self.device)

@@ -11,10 +11,14 @@ import utils
 parser = argparse.ArgumentParser()
 parser.add_argument("--env", required=True,
                     help="name of the environment to be run (REQUIRED)")
+parser.add_argument("--obj_type", type=str, default=None,
+                    help="object type")
+parser.add_argument("--obj_color", type=str, default=None,
+                    help="object color")
 parser.add_argument("--model", required=True,
                     help="name of the trained model (REQUIRED)")
-parser.add_argument("--seed", type=int, default=0,
-                    help="random seed (default: 0)")
+parser.add_argument("--seed", type=int, default=None,
+                    help="random seed (default: None)")
 parser.add_argument("--shift", type=int, default=0,
                     help="number of times the environment is reset at the beginning (default: 0)")
 parser.add_argument("--argmax", action="store_true", default=False,
@@ -45,13 +49,12 @@ print(f"Device: {device}\n")
 
 # Load environment
 
-env = utils.make_env(args.env, args.seed)
+env = utils.make_env(args.env, args.obj_type, args.obj_color, args.seed)
 for _ in range(args.shift):
     env.reset()
 print("Environment loaded\n")
 
 # Load agent
-
 model_dir = utils.get_model_dir(args.model)
 agent = utils.Agent(env, env.observation_space, env.action_space, model_dir,
                     device=device, argmax=args.argmax, use_memory=args.memory, use_text=args.text)
@@ -63,14 +66,13 @@ if args.gif:
    from array2gif import write_gif
    frames = []
 
-# Create a window to view the environment
-env.render('human')
 
 for episode in range(args.episodes):
+    env.render()
     obs = env.reset()
 
     for _ in range(args.maxsteps):
-        env.render('human')
+        env.render()
         if args.gif:
             frames.append(numpy.moveaxis(env.render("rgb_array"), 2, 0))
 
