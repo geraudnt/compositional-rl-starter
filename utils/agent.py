@@ -14,11 +14,12 @@ class Agent:
     - to analyze the feedback (i.e. reward and done state) of its action."""
 
     def __init__(self, env, obs_space, action_space, model_dir,
-                 device=None, argmax=False, use_memory=False, use_text=False):
+                 device=None, argmax=False, num_envs=1, use_memory=False, use_text=False):
         obs_space, self.preprocess_obs_goals = utils.get_obs_goals_preprocessor(obs_space)
         self.acmodel = ACModel(obs_space, action_space, use_memory=use_memory, use_text=use_text)
         self.device = device
-        self.argmax = argmax        
+        self.argmax = argmax      
+        self.num_envs = num_envs
         
         status = utils.get_status(model_dir)
 
@@ -29,7 +30,7 @@ class Agent:
         #     plt.show()
 
         if self.acmodel.recurrent:
-            self.memories = torch.zeros(len(self.goals), self.acmodel.memory_size)
+            self.memories = torch.zeros(self.num_envs, self.acmodel.memory_size)
 
         self.acmodel.load_state_dict(status["model_state"])
         self.acmodel.to(self.device)
@@ -54,22 +55,27 @@ class Agent:
         actions = np.zeros(len(obss), dtype=int)
 
         for i in range(len(obss)):
+            memory = self.memories[i]
+            
             obs_goals = self.concat_obs_goal(obss[i])
-
             preprocessed_obs_goals = self.preprocess_obs_goals(obs_goals, device=self.device)
 
             with torch.no_grad():
                 if self.acmodel.recurrent:
-                    dists, values, self.memories = self.acmodel(preprocessed_obs_goals, self.memories)
+                    memory = torch.stack([memory]*len(self.goals),0)
+                    dists, values, memory = self.acmodel(preprocessed_obs_goals, memory)
                 else:
                     dists, values = self.acmodel(preprocessed_obs_goals)
-            print(values.data,values.data.max(0)[1])
             g = values.data.max(0)[1]
+            print(values.data,g)
             if self.argmax:
                 actions[i] = dists.probs.max(1, keepdim=True)[1][g].cpu().numpy()
             else:
                 actions[i] = dists.sample()[g].cpu().numpy()
-            
+        
+            if self.acmodel.recurrent:
+               self.memories[i] = memory[g]
+
         return actions
 
     def get_action(self, obs):

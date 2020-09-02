@@ -5,8 +5,9 @@ def worker(conn, env):
     while True:
         cmd, data = conn.recv()
         if cmd == "step":
+            maxsteps = 100
             obs, reward, done, info = env.step(data)
-            if done:
+            if done:# or env.step_count>=maxsteps:
                 obs = env.reset()
             conn.send((obs, reward, done, info))
         elif cmd == "reset":
@@ -41,10 +42,11 @@ class ParallelEnv(gym.Env):
         return results
 
     def step(self, actions):
+        maxsteps = 100
         for local, action in zip(self.locals, actions[1:]):
             local.send(("step", action))
         obs, reward, done, info = self.envs[0].step(actions[0])
-        if done:
+        if done:# or self.envs[0].step_count>=maxsteps:
             obs = self.envs[0].reset()
         results = zip(*[(obs, reward, done, info)] + [local.recv() for local in self.locals])
         return results

@@ -16,18 +16,18 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     ## General parameters
-    parser.add_argument("--algo", required=True,
-                        help="algorithm to use: a2c | ppo (REQUIRED)")
-    parser.add_argument("--env", required=True,
-                        help="name of the environment to train on (REQUIRED)")
+    parser.add_argument("--env", default='BabyAI-GoToObjCustom-v0',
+                        help="name of the environment to train on (default: BabyAI-GoToObjCustom-v0)")
     parser.add_argument("--obj_type", type=str, default=None,
                         help="object type")
     parser.add_argument("--obj_color", type=str, default=None,
                         help="object color")
-    parser.add_argument("--model", default=None,
-                        help="name of the model (default: {ENV}_{ALGO}_{TIME})")
-    parser.add_argument("--seed", type=int, default=None,
-                        help="random seed (default: None)")
+    parser.add_argument("--algo", default='ppo',
+                        help="algorithm to use: a2c | ppo (default: ppo)")                        
+    parser.add_argument("--model", default='model',
+                        help="name of the model (default: model)")
+    parser.add_argument("--seed", type=int, default=1,
+                        help="random seed (default: 1)")
     parser.add_argument("--log-interval", type=int, default=1,
                         help="number of updates between two logs (default: 1)")
     parser.add_argument("--save-interval", type=int, default=10,
@@ -74,9 +74,8 @@ if __name__ == '__main__':
     # Set run dir
 
     date = datetime.datetime.now().strftime("%y-%m-%d-%H-%M-%S")
-    default_model_name = f"{args.env}_{args.algo}_seed{args.seed}_{date}"
 
-    model_name = args.model or default_model_name
+    model_name = args.model
     model_dir = utils.get_model_dir(model_name)
 
     # Load loggers and Tensorboard writer
@@ -103,7 +102,7 @@ if __name__ == '__main__':
 
     envs = []
     for i in range(args.procs):
-        envs.append(utils.make_env(args.env, args.seed + 10000 * i))
+        envs.append(utils.make_env(args.env, args.obj_type, args.obj_color, args.seed + 10000 * i))
     txt_logger.info("Environments loaded\n")
 
     # Load training status
@@ -183,11 +182,11 @@ if __name__ == '__main__':
             data += rreturn_per_episode.values()
             header += ["num_frames_" + key for key in num_frames_per_episode.keys()]
             data += num_frames_per_episode.values()
-            header += ["entropy", "value", "policy_loss", "value_loss", "grad_norm"]
-            data += [logs["entropy"], logs["value"], logs["policy_loss"], logs["value_loss"], logs["grad_norm"]]
+            header += ["entropy", "value", "goals", "policy_loss", "value_loss", "grad_norm"]
+            data += [logs["entropy"], logs["value"], len(list(algo.goals.keys())), logs["policy_loss"], logs["value_loss"], logs["grad_norm"]]
 
             txt_logger.info(
-                "U {} | F {:06} | FPS {:04.0f} | D {} | rR:uomM {:.2f} {:.2f} {:.2f} {:.2f} | F:uomM {:.1f} {:.1f} {} {} | H {:.3f} | V {:.3f} | pL {:.3f} | vL {:.3f} | ∇ {:.3f}"
+                "U {} | F {:06} | FPS {:04.0f} | D {} | rR:uomM {:.2f} {:.2f} {:.2f} {:.2f} | F:uomM {:.1f} {:.1f} {} {} | H {:.3f} | V {:.3f} | G {:.3f} | pL {:.3f} | vL {:.3f} | ∇ {:.3f}"
                 .format(*data).encode('utf-8'))
 
             header += ["return_" + key for key in return_per_episode.keys()]

@@ -9,16 +9,16 @@ import utils
 # Parse arguments
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--env", required=True,
-                    help="name of the environment to be run (REQUIRED)")
+parser.add_argument("--env", default='BabyAI-GoToObjCustom-v0',
+                    help="name of the environment to train on (default: BabyAI-GoToObjCustom-v0)")
 parser.add_argument("--obj_type", type=str, default=None,
                     help="object type")
 parser.add_argument("--obj_color", type=str, default=None,
                     help="object color")
-parser.add_argument("--model", required=True,
-                    help="name of the trained model (REQUIRED)")
-parser.add_argument("--seed", type=int, default=None,
-                    help="random seed (default: None)")
+parser.add_argument("--model", default='model',
+                    help="name of the model (default: model)")
+parser.add_argument("--seed", type=int, default=1,
+                    help="random seed (default: 1)")
 parser.add_argument("--shift", type=int, default=0,
                     help="number of times the environment is reset at the beginning (default: 0)")
 parser.add_argument("--argmax", action="store_true", default=False,
@@ -68,11 +68,10 @@ if args.gif:
 
 
 for episode in range(args.episodes):
-    env.render()
     obs = env.reset()
 
     for _ in range(args.maxsteps):
-        env.render()
+        env.render('human')
         if args.gif:
             frames.append(numpy.moveaxis(env.render("rgb_array"), 2, 0))
 

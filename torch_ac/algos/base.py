@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 import torch
 import random
+import hashlib
 
 from torch_ac.format import default_preprocess_obs_goals
 from torch_ac.utils import dictlist, penv
@@ -62,6 +63,7 @@ class BaseAlgo(ABC):
         self.recurrence = recurrence
         self.preprocess_obs_goals = preprocess_obs_goals or default_preprocess_obs_goals
         self.reshape_reward = reshape_reward
+        self.eps = 0.1
         self.her = 2
         self.N = 0
 
@@ -124,11 +126,52 @@ class BaseAlgo(ABC):
         self.log_reshaped_return = [0] * self.num_procs
         self.log_num_frames = [0] * self.num_procs
 
+    def to_hash(self,obs):
+        hash_obs = hashlib.md5(obs.tostring()).hexdigest()
+        return hash_obs
+        
+    def update_goal(self, processes=None, strategy='best'):
+        # Update goal with epsilon greedy generalised policy improvement
+
+        goals = list(self.goals.values())
+        
+        processes = processes if processes else range(self.num_procs)
+        for i in processes:
+            if strategy == 'random':
+                self.goal[i] = random.sample(goals,1)[0]
+                continue
+
+            obs = self.obs[i]
+            memory = self.memory[i]
+            
+            if 'image' in obs:
+                obs_goals = [
+                {
+                    "image": np.concatenate((obs["image"],goals[i]),axis=2),
+                    "mission": obs['mission']
+                }
+                for i in range(len(goals))]
+            else:
+                obs_goals = [ np.concatenate((obs,goals[i]),axis=2) 
+                                for i in range(len(goals))]
+            
+            preprocessed_obs_goals = self.preprocess_obs_goals(obs_goals, device=self.device)
+            with torch.no_grad():
+                if self.acmodel.recurrent:
+                    memory = torch.stack([memory]*len(goals),0)
+                    dists, values, _ = self.acmodel(preprocessed_obs_goals, memory)
+                else:
+                    dists, values = self.acmodel(preprocessed_obs_goals)
+            best_goal_idx = values.data.max(0)[1]
+
+            self.goal[i] = goals[best_goal_idx]
+    
+        
     def concat_obs_goal(self):
         """
         TODO
         """
-        
+            
         if 'image' in self.obs[0]:
             self.obs_goal = [
             {
@@ -150,7 +193,7 @@ class BaseAlgo(ABC):
 
         if 'image' in obs:
             obs = obs['image']
-        if hash(str(obs)) != hash(str(goal)) and done:  
+        if self.to_hash(obs) != self.to_hash(goal) and done:  
             reward = self.N
             
         return reward
@@ -178,7 +221,7 @@ class BaseAlgo(ABC):
 
         for i in range(self.num_frames_per_proc):
             # Do one agent-environment interaction
-
+            self.update_goal()
             self.concat_obs_goal()
             preprocessed_obs_goal = self.preprocess_obs_goals(self.obs_goal, device=self.device)
             with torch.no_grad():
@@ -216,19 +259,13 @@ class BaseAlgo(ABC):
 
             # Update goals
             
-            # done_ = np.array(done)+0
-            # idxs = np.arange(self.num_procs)[done_==1]
-            # for i in idxs:
             for j, done_ in enumerate(done):
                 if done_:
-                    if 'image' in self.obs[0]:
-                        self.goals[hash(str(self.obs[j]['image']))] = self.obs[j]['image']
+                    if 'image' in self.obs[j]:
+                        self.goals[self.to_hash(self.obs[j]['image'])] = self.obs[j]['image']
                     else:
-                        self.goals[hash(str(self.obs[j]))] = self.obs[j]
-
-                    goals = list(self.goals.values())
-                    self.goal[j] = random.sample(goals,1)[0]
-                    print('Num goals: ',len(goals))
+                        self.goals[self.to_hash(self.obs[j])] = self.obs[j]
+                    # self.update_goal(processes=[j])
             self.obs = obs
             
             # Update log values
@@ -279,7 +316,6 @@ class BaseAlgo(ABC):
             
             # Update experiences values
 
-            # self.exps[i] = (self.obs, action, reward, done, obs)
             self.obs_goals[i] = self.obs_goal
             if self.acmodel.recurrent:
                 self.memories[i] = self.memory
