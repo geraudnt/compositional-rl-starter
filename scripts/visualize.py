@@ -49,7 +49,7 @@ print(f"Device: {device}\n")
 
 # Load environment
 
-env = utils.make_env(args.env, args.obj_type, args.obj_color, args.seed)
+env = utils.make_env(args.env, args.obj_type, args.obj_color, seed=args.seed)
 for _ in range(args.shift):
     env.reset()
 print("Environment loaded\n")
@@ -68,6 +68,7 @@ if args.gif:
 
 
 for episode in range(args.episodes):
+    agent.reset()
     obs = env.reset()
 
     for _ in range(args.maxsteps):

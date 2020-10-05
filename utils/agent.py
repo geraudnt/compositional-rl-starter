@@ -30,7 +30,7 @@ class Agent:
         #     plt.show()
 
         if self.acmodel.recurrent:
-            self.memories = torch.zeros(self.num_envs, self.acmodel.memory_size)
+            self.memories = torch.zeros(self.num_envs, self.acmodel.memory_size, device=self.device)
 
         self.acmodel.load_state_dict(status["model_state"])
         self.acmodel.to(self.device)
@@ -75,15 +75,19 @@ class Agent:
         
             if self.acmodel.recurrent:
                self.memories[i] = memory[g]
-
+        
         return actions
+    
+    def reset(self):
+        if self.acmodel.recurrent:
+            self.memories = torch.zeros(self.num_envs, self.acmodel.memory_size, device=self.device)
 
     def get_action(self, obs):
         return self.get_actions([obs])[0]
 
     def analyze_feedbacks(self, rewards, dones):
         if self.acmodel.recurrent:
-            masks = 1 - torch.tensor(dones, dtype=torch.float).unsqueeze(1)
+            masks = 1 - torch.tensor(dones, dtype=torch.float, device=self.device).unsqueeze(1)
             self.memories *= masks
 
     def analyze_feedback(self, reward, done):

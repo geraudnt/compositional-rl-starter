@@ -66,6 +66,7 @@ class BaseAlgo(ABC):
         self.eps = 0.1
         self.her = 2
         self.N = 0
+        self.maxsteps = 100
 
         # Control parameters
 
@@ -152,7 +153,7 @@ class BaseAlgo(ABC):
                 }
                 for i in range(len(goals))]
             else:
-                obs_goals = [ np.concatenate((obs,goals[i]),axis=2) 
+                obs_goals = [ np.concatenate((obs,goals[i]),axis=0) 
                                 for i in range(len(goals))]
             
             preprocessed_obs_goals = self.preprocess_obs_goals(obs_goals, device=self.device)
@@ -180,11 +181,8 @@ class BaseAlgo(ABC):
             }
             for i in range(self.num_procs)]
         else:
-            self.obs_goal = [
-            {
-                "image": np.concatenate((self.obs[i],self.goal[i]),axis=2)
-            }
-            for i in range(self.num_procs)]
+            self.obs_goal = [ np.concatenate((self.obs[i],self.goal[i]),axis=0)
+                              for i in range(self.num_procs)]
 
     def extended_reward(self, obs, goal, action, reward, done,b=False):   
         """
@@ -221,7 +219,7 @@ class BaseAlgo(ABC):
 
         for i in range(self.num_frames_per_proc):
             # Do one agent-environment interaction
-            self.update_goal()
+            # self.update_goal()
             self.concat_obs_goal()
             preprocessed_obs_goal = self.preprocess_obs_goals(self.obs_goal, device=self.device)
             with torch.no_grad():
@@ -230,11 +228,11 @@ class BaseAlgo(ABC):
                 else:
                     dist, value = self.acmodel(preprocessed_obs_goal)
             action = dist.sample()
-            obs, reward, done, _ = self.env.step(action.cpu().numpy())
+            obs, reward, done, info = self.env.step(action.cpu().numpy())
             
             # Update experiences values
 
-            self.exps[i] = (self.obs, action, reward, done, obs)
+            self.exps[i] = (self.obs, action, reward, done, info)
             self.obs_goals[i] = self.obs_goal
             if self.acmodel.recurrent:
                 self.memories[i] = self.memory
@@ -245,13 +243,13 @@ class BaseAlgo(ABC):
             self.actions[i] = action
             self.values[i] = value
             extended_reward = [
-                self.extended_reward(obs_, goal_, action_, reward_, done_)
-                for obs_, goal_, action_, reward_, done_ in zip(self.obs, self.goal, action, reward, done)
+                self.extended_reward(info_['obs'], goal_, action_, reward_, done_)
+                for info_, goal_, action_, reward_, done_ in zip(info, self.goal, action, reward, done)
             ]
             if self.reshape_reward is not None:
                 self.rewards[i] = torch.tensor([
-                    self.reshape_reward(obs_, goal_, action_, reward_, done_)
-                    for obs_, goal_, action_, reward_, done_ in zip(self.obs, self.goal, action, extended_reward, done)
+                    self.reshape_reward(info_['obs'], goal_, action_, reward_, done_)
+                    for info_, goal_, action_, reward_, done_ in zip(info, self.goal, action, extended_reward, done)
                 ], device=self.device)
             else:
                 self.rewards[i] = torch.tensor(extended_reward, device=self.device)
@@ -260,12 +258,17 @@ class BaseAlgo(ABC):
             # Update goals
             
             for j, done_ in enumerate(done):
+                # add terminal state to buffer
                 if done_:
-                    if 'image' in self.obs[j]:
-                        self.goals[self.to_hash(self.obs[j]['image'])] = self.obs[j]['image']
+                    if 'image' in info[j]['obs']:
+                        self.goals[self.to_hash(info[j]['obs']['image'])] = info[j]['obs']['image']
                     else:
-                        self.goals[self.to_hash(self.obs[j])] = self.obs[j]
-                    # self.update_goal(processes=[j])
+                        self.goals[self.to_hash(info[j]['obs'])] = info[j]['obs']
+                    self.update_goal(processes=[j])
+                # # reset env
+                # if done_ or self.env.envs[j].step_count > self.maxsteps:
+                #     obs[j] = self.env.envs[j].reset() 
+        
             self.obs = obs
             
             # Update log values
@@ -287,9 +290,11 @@ class BaseAlgo(ABC):
 
         # Hindsight experience replay
         
+        if self.acmodel.recurrent and self.her>1:
+            self.memory = self.memories[0]
         for i in range(self.num_frames_per_proc, len(self.exps)):
             e = i-self.num_frames_per_proc
-            self.obs, action, reward, done, obs = self.exps[e]
+            self.obs, action, reward, done, info = self.exps[e]
 
             b=False
             dones = np.array(self.dones[e:self.num_frames_per_proc])+0
@@ -298,7 +303,7 @@ class BaseAlgo(ABC):
                 if len(next_goals) != 0 and next_goals[0] >= e:
                     if e==next_goals[0]:
                         b=True
-                    obs_ = self.exps[next_goals[0]][0][p]
+                    obs_ = self.exps[next_goals[0]][-1][p]['obs']
                     if 'image' in obs_:
                         obs_ = obs_['image']
                     self.goal[p] = obs_
@@ -325,13 +330,13 @@ class BaseAlgo(ABC):
             self.actions[i] = action
             self.values[i] = value
             extended_reward = [
-                self.extended_reward(obs_, goal_, action_, reward_, done_,b=b)
-                for obs_, goal_, action_, reward_, done_ in zip(self.obs, self.goal, action, reward, done)
+                self.extended_reward(info_['obs'], goal_, action_, reward_, done_,b=b)
+                for info_, goal_, action_, reward_, done_ in zip(info, self.goal, action, reward, done)
             ]
             if self.reshape_reward is not None:
                 self.rewards[i] = torch.tensor([
-                    self.reshape_reward(obs_, goal_, action_, reward_, done_)
-                    for obs_, goal_, action_, reward_, done_ in zip(self.obs, self.goal, action, extended_reward, done)
+                    self.reshape_reward(info_['obs'], goal_, action_, reward_, done_)
+                    for info_, goal_, action_, reward_, done_ in zip(info, self.goal, action, extended_reward, done)
                 ], device=self.device)
             else:
                 self.rewards[i] = torch.tensor(extended_reward, device=self.device)

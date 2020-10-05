@@ -24,7 +24,6 @@ class PPOAlgo(BaseAlgo):
         assert self.batch_size % self.recurrence == 0
 
         self.optimizer = torch.optim.Adam(self.acmodel.parameters(), lr, eps=adam_eps)
-        self.batch_num = 0
 
     def update_parameters(self, exps):
         # Collect experiences
@@ -143,12 +142,6 @@ class PPOAlgo(BaseAlgo):
 
         indexes = numpy.arange(0, self.num_frames, self.recurrence)
         indexes = numpy.random.permutation(indexes)
-
-        # Shift starting indexes by self.recurrence//2 half the time
-        if self.batch_num % 2 == 1:
-            indexes = indexes[(indexes + self.recurrence) % self.num_frames_per_proc != 0]
-            indexes += self.recurrence // 2
-        self.batch_num += 1
 
         num_indexes = self.batch_size // self.recurrence
         batches_starting_indexes = [indexes[i:i+num_indexes] for i in range(0, len(indexes), num_indexes)]
